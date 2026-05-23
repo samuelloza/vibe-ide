@@ -19,7 +19,7 @@ Este repositorio contiene dos proyectos relacionados:
 
 | Área | Capacidad |
 | --- | --- |
-| Editor | Monaco Editor, snippets, completions LSP, hover, diagnostics, signatures y code actions |
+| Editor | Monaco Editor, completions LSP, hover, diagnostics, signatures y code actions |
 | Lenguajes | C++17, Python 3, Java 17, JavaScript, Rust y Go |
 | Enunciado | Panel de problema en español con divisor movible entre enunciado y editor |
 | Paneles | Output/input/testcases redimensionables |
@@ -96,7 +96,7 @@ sequenceDiagram
 | `app/` | Entradas de Next.js App Router y estilos globales |
 | `components/` | Layout del IDE, editor, toolbar, paneles y botones |
 | `hooks/` | Atajos de teclado y WebSocket de ejecución |
-| `lib/` | Metadata de lenguajes, snippets y exports de configuración LSP |
+| `lib/` | Metadata de lenguajes, código inicial main y exports de configuración LSP |
 | `lsp/` | Cliente LSP, adapter Monaco, descriptores de lenguaje y bridge Docker |
 | `services/` | Cliente del Judge API |
 | `store/` | Store Zustand con estado persistido |
@@ -255,7 +255,7 @@ WS   /submission/:id
 ## Agregar un Lenguaje
 
 1. Agrega el id en `types/ide.ts`.
-2. Agrega metadata y código inicial en `lib/languages.ts`.
+2. Agrega metadata y código inicial main en `lib/language-options.ts`.
 3. Agrega descriptor LSP en `lsp/integrations/<language>.ts`.
 4. Regístralo en `lsp/integrations/index.ts`.
 5. Agrega ruta y comando en `lsp/server/server.mjs`.
@@ -267,7 +267,7 @@ WS   /submission/:id
 | --- | --- | --- |
 | `LSP: <server>` aparece disabled | Falta `NEXT_PUBLIC_LSP_*_WS` | Copia `.env.example` a `.env.local` y reinicia Next.js |
 | LSP se desconecta al instante | Conflicto de puerto, token privado incorrecto o ruta no soportada | Revisa `LSP_AUTH_TOKEN`, `LSP_SERVER_WS_BASE`, `/healthz` externo y `npm run lsp:logs` |
-| Fallan completions Java | `jdtls` espera `Main.java` para el template default | Mantén `lsp/document-uri.ts` alineado con el template Java |
+| Fallan completions Java | `jdtls` espera que las clases públicas Java coincidan con el nombre del archivo | Mantén `lsp/document-uri.ts` alineado con el nombre del archivo del editor |
 | Diagnostics C++ ruidosos | `clangd` necesita compile flags | Personaliza `/workspace/compile_flags.txt` |
 | Run/Submit falla | Judge API no cumple el contrato | Verifica `NEXT_PUBLIC_JUDGE_API_URL` y rutas backend |
 | No llegan veredictos por WS | URL WS del juez incorrecta o bloqueada | Configura `NEXT_PUBLIC_JUDGE_WS_URL` e inspecciona Network |

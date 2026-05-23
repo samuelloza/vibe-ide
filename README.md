@@ -19,12 +19,12 @@ This repository contains two closely related projects:
 
 | Area | Capability |
 | --- | --- |
-| Editor | Monaco Editor, snippets, LSP completions, hover, diagnostics, signatures and code actions |
+| Editor | Monaco Editor, LSP completions, hover, diagnostics, signatures and code actions |
 | Languages | C++17, Python 3, Java 17, JavaScript, Rust and Go |
 | Problem view | Spanish problem statement panel with a draggable divider between statement and editor |
 | Panels | Resizable output/input/testcase panel |
 | Themes | Dark, light and hacker terminal themes |
-| Persistence | Code, selected language, testcases, layout sizes and theme are persisted locally |
+| Persistence | Code entered by the user, selected language, testcases, layout sizes and theme are persisted locally |
 | Judge | HTTP run/submit calls plus WebSocket submission status stream |
 | LSP auth | Optional token between browser and LSP bridge |
 
@@ -96,7 +96,7 @@ sequenceDiagram
 | `app/` | Next.js App Router entry points and global styles |
 | `components/` | IDE layout, editor, toolbar, panels and buttons |
 | `hooks/` | Keyboard shortcuts and execution WebSocket handling |
-| `lib/` | Language metadata, editor snippets and LSP config exports |
+| `lib/` | Language metadata, starter main code, and LSP config exports |
 | `lsp/` | Browser LSP client, Monaco adapter, language descriptors and Docker LSP bridge |
 | `services/` | Judge API client |
 | `store/` | Zustand store with persisted IDE state |
@@ -255,7 +255,7 @@ WS   /submission/:id
 ## Add a Language
 
 1. Add the language id to `types/ide.ts`.
-2. Add display metadata and starter code in `lib/languages.ts`.
+2. Add display metadata and starter main code in `lib/language-options.ts`.
 3. Add an LSP descriptor in `lsp/integrations/<language>.ts`.
 4. Register it in `lsp/integrations/index.ts`.
 5. Add a bridge route and command in `lsp/server/server.mjs`.
@@ -267,7 +267,7 @@ WS   /submission/:id
 | --- | --- | --- |
 | `LSP: <server>` shows disabled | Missing `NEXT_PUBLIC_LSP_*_WS` variable | Copy `.env.example` to `.env.local` and restart Next.js |
 | LSP disconnects immediately | Port conflict, private token mismatch, or unsupported route | Check `LSP_AUTH_TOKEN`, `LSP_SERVER_WS_BASE`, external `/healthz`, and `npm run lsp:logs` |
-| Java completions fail | `jdtls` expects `Main.java` for the default template | Keep `lsp/document-uri.ts` aligned with the Java template |
+| Java completions fail | `jdtls` expects Java public classes to match the file name | Keep `lsp/document-uri.ts` aligned with the editor file name |
 | C++ diagnostics are noisy | `clangd` needs compile flags | Customize `/workspace/compile_flags.txt` |
 | Run/Submit fails | Judge API does not implement the expected contract | Verify `NEXT_PUBLIC_JUDGE_API_URL` and backend routes |
 | WebSocket verdicts do not arrive | Judge WS URL is wrong or blocked | Set `NEXT_PUBLIC_JUDGE_WS_URL` explicitly and inspect the browser network tab |
