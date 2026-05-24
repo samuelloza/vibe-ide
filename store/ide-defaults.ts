@@ -1,5 +1,5 @@
 import { createDefaultCodeByLanguage, DEFAULT_LANGUAGE_ID, defaultCodeFor } from '@/lib/language-options';
-import type { ExecutionResult, Testcase, UISettings } from '@/types/ide';
+import type { ExecutionResult, IdeProblemContext, JudgeSubmissionContext, Testcase, UISettings } from '@/types/ide';
 
 export const IDE_STORAGE_KEY = 'vibe-competitive-ide';
 
@@ -40,6 +40,18 @@ export const initialUiSettings: UISettings = {
   sidebarWidth: 320,
   sidebarCollapsed: false,
 };
+
+export const initialProblemContext: IdeProblemContext = {
+  title: 'Echo Number',
+  description:
+    'Lee un entero e imprime exactamente el mismo entero. Este problema de ejemplo mantiene simple el flujo del juez mientras pruebas el editor, la entrada personalizada y los envíos.',
+  inputSpec: 'Un solo entero n.',
+  outputSpec: 'Imprime el valor de n.',
+  hint: '',
+  sampleCases: [{ input: '5', output: '5' }],
+};
+
+export const initialJudgeContext: JudgeSubmissionContext = {};
 
 export function createInitialCode() {
   return createDefaultCodeByLanguage();

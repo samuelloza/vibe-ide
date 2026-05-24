@@ -4,17 +4,16 @@
   "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development node server.mjs",
+    "dev": "PORT=3100 NODE_ENV=development node server.mjs",
     "build": "next build",
     "start": "NODE_ENV=production node server.mjs",
     "lint": "npm run typecheck",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run build",
-    "lsp:up": "docker compose -f lsp/docker-compose.yml up --build",
-    "lsp:up:detached": "docker compose -f lsp/docker-compose.yml up --build -d",
-    "lsp:down": "docker compose -f lsp/docker-compose.yml down",
-    "lsp:logs": "docker compose -f lsp/docker-compose.yml logs -f",
-    "lsp:cache": "node lsp/scripts/cache-runtime.mjs"
+    "lsp:up": "docker compose -f ../vibe-lsp-server/docker-compose.yml up --build",
+    "lsp:up:detached": "docker compose -f ../vibe-lsp-server/docker-compose.yml up --build -d",
+    "lsp:down": "docker compose -f ../vibe-lsp-server/docker-compose.yml down",
+    "lsp:logs": "docker compose -f ../vibe-lsp-server/docker-compose.yml logs -f"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

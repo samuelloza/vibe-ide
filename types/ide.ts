@@ -47,6 +47,39 @@ export type Testcase = {
   readonly expanded: boolean;
 };
 
+export type IdeProblemSampleCase = {
+  readonly input: string;
+  readonly output: string;
+};
+
+export type IdeProblemContext = {
+  readonly problemId?: string;
+  readonly contestId?: string;
+  readonly contestProblemId?: string;
+  readonly title: string;
+  readonly description: string;
+  readonly inputSpec: string;
+  readonly outputSpec: string;
+  readonly hint?: string;
+  readonly timeLimitSeconds?: number;
+  readonly memoryLimitMb?: number;
+  readonly sampleCases: readonly IdeProblemSampleCase[];
+};
+
+export type JudgeSubmissionContext = {
+  readonly problemId?: string;
+  readonly contestId?: string;
+  readonly contestProblemId?: string;
+  readonly courseId?: string;
+  readonly assignmentId?: string;
+  readonly languageId?: string;
+};
+
+export type JudgeLanguageOption = {
+  readonly languageId: number;
+  readonly name: string;
+};
+
 export type UISettings = {
   readonly bottomPanelHeight: number;
   readonly colorTheme: ColorTheme;
@@ -64,6 +97,11 @@ export type RunPayload = {
 
 export type SubmissionPayload = RunPayload & {
   readonly problemId?: string;
+  readonly contestId?: string;
+  readonly contestProblemId?: string;
+  readonly courseId?: string;
+  readonly assignmentId?: string;
+  readonly languageId?: string;
 };
 
 export type SubmissionStatusMessage = {

@@ -36,6 +36,43 @@ input {
   font: inherit;
 }
 
+.rich-problem-content {
+  overflow-wrap: anywhere;
+}
+
+.rich-problem-content p {
+  margin: 0.5rem 0;
+}
+
+.rich-problem-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(51 65 85);
+  background: rgb(15 23 42 / 0.7);
+}
+
+.rich-problem-content .rich-math {
+  font-family: "Times New Roman", "Cambria Math", "STIX Two Math", serif;
+  color: #f8fafc;
+}
+
+.rich-problem-content .rich-math-inline {
+  display: inline-block;
+  padding: 0 0.12rem;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.rich-problem-content .rich-math-display {
+  display: block;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  text-align: center;
+  font-style: italic;
+  white-space: nowrap;
+}
+
 .resize-handle {
   cursor: ns-resize;
   touch-action: none;

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { errorMessage } from '@/lib/errors';
 import { parseSubmissionStatusMessage } from '@/lib/execution-message';
-import { judgeWebSocketUrl } from '@/services/judge-api';
+import { getSubmission, judgeWebSocketUrl } from '@/services/judge-api';
 import { useIDEStore } from '@/store/ide-store';
 
 export function useExecutionSocket(submissionId?: string) {
@@ -13,6 +13,42 @@ export function useExecutionSocket(submissionId?: string) {
 
   useEffect(() => {
     if (!submissionId) return undefined;
+
+    if (!process.env.NEXT_PUBLIC_JUDGE_WS_URL) {
+      let cancelled = false;
+      let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+      const poll = async () => {
+        try {
+          const message = await getSubmission(submissionId);
+          if (cancelled) return;
+          setExecution({
+            id: message.submissionId,
+            phase: message.phase,
+            verdict: message.verdict ?? 'Pending',
+            stdout: message.stdout ?? '',
+            stderr: message.stderr ?? '',
+            compileErrors: message.compileErrors ?? '',
+            logs: message.logs ?? [],
+            runtimeMs: message.runtimeMs,
+            memoryKb: message.memoryKb,
+          });
+          if (message.phase !== 'completed' && message.phase !== 'error') {
+            timeoutId = setTimeout(poll, 2500);
+          }
+        } catch (error) {
+          addLog(errorMessage(error, 'Could not poll submission status.'));
+          timeoutId = setTimeout(poll, 5000);
+        }
+      };
+
+      void poll();
+
+      return () => {
+        cancelled = true;
+        if (timeoutId) clearTimeout(timeoutId);
+      };
+    }
 
     let socket: WebSocket;
     try {

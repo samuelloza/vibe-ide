@@ -16,7 +16,7 @@ This checkout contains the **web IDE**:
 - Judge HTTP + WebSocket client integration.
 - Browser-to-server LSP proxy routes under `/api/lsp/*`.
 
-The actual language-server runtime is expected to run separately and be reachable through `LSP_SERVER_WS_BASE` (for example `ws://127.0.0.1:3001`). Some scripts still target a local `lsp/` companion directory; they only work when that directory is present in your checkout.
+The actual language-server runtime is expected to run separately and be reachable through `LSP_SERVER_WS_BASE` (for example `ws://127.0.0.1:3101`). Some scripts still target a local `lsp/` companion directory; they only work when that directory is present in your checkout.
 
 ## Highlights
 
@@ -132,7 +132,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open <http://localhost:3000>.
+Open <http://localhost:3100>.
 
 If you only want to inspect the UI, the judge backend and LSP runtime can be offline. Run/submit and LSP features will show connection errors until their services are available.
 
@@ -150,8 +150,8 @@ WS   /submission/:id
 Set the judge URLs in `.env.local`:
 
 ```env
-NEXT_PUBLIC_JUDGE_API_URL="http://localhost:8080"
-NEXT_PUBLIC_JUDGE_WS_URL="ws://localhost:8080"
+NEXT_PUBLIC_JUDGE_API_URL="http://localhost:5043/api"
+NEXT_PUBLIC_JUDGE_WS_URL=""
 ```
 
 If `NEXT_PUBLIC_JUDGE_WS_URL` is omitted, the app derives it from `NEXT_PUBLIC_JUDGE_API_URL`.
@@ -173,7 +173,7 @@ NEXT_PUBLIC_LSP_GO_WS="/api/lsp/go"
 
 ```env
 LSP_AUTH_TOKEN="dev-lsp-token"
-LSP_SERVER_WS_BASE="ws://127.0.0.1:3001"
+LSP_SERVER_WS_BASE="ws://127.0.0.1:3101"
 ```
 
 Do **not** rename `LSP_AUTH_TOKEN` to `NEXT_PUBLIC_*`; anything with `NEXT_PUBLIC_` is bundled into browser code.
@@ -192,8 +192,8 @@ Expected upstream routes from the external LSP runtime:
 ## Example `.env.local`
 
 ```env
-NEXT_PUBLIC_JUDGE_API_URL="http://localhost:8080"
-NEXT_PUBLIC_JUDGE_WS_URL="ws://localhost:8080"
+NEXT_PUBLIC_JUDGE_API_URL="http://localhost:5043/api"
+NEXT_PUBLIC_JUDGE_WS_URL=""
 
 NEXT_PUBLIC_LSP_CPP_WS="/api/lsp/cpp"
 NEXT_PUBLIC_LSP_PYTHON_WS="/api/lsp/python"
@@ -203,7 +203,7 @@ NEXT_PUBLIC_LSP_RUST_WS="/api/lsp/rust"
 NEXT_PUBLIC_LSP_GO_WS="/api/lsp/go"
 
 LSP_AUTH_TOKEN="dev-lsp-token"
-LSP_SERVER_WS_BASE="ws://127.0.0.1:3001"
+LSP_SERVER_WS_BASE="ws://127.0.0.1:3101"
 ```
 
 ## Judge API contract

@@ -19,6 +19,7 @@ export function useJudgeActions({ notify }: JudgeActionOptions) {
   const codeByLanguage = useIDEStore((state) => state.codeByLanguage);
   const stdin = useIDEStore((state) => state.stdin);
   const testcases = useIDEStore((state) => state.testcases);
+  const judge = useIDEStore((state) => state.judge);
   const setExecution = useIDEStore((state) => state.setExecution);
   const addLog = useIDEStore((state) => state.addLog);
   const [busyAction, setBusyAction] = useState<BusyAction>(null);
@@ -55,11 +56,25 @@ export function useJudgeActions({ notify }: JudgeActionOptions) {
   }, [notify, payload, setExecution]);
 
   const submit = useCallback(async () => {
+    if (!judge.languageId) {
+      setExecution({ phase: 'error', verdict: 'Internal Error', logs: ['Selecciona un lenguaje oficial antes de enviar.'] });
+      notify('Selecciona un lenguaje oficial antes de enviar.');
+      return;
+    }
+
     setBusyAction('submit');
     setExecution({ phase: 'queued', verdict: 'Pending', logs: ['Submission queued.'] });
 
     try {
-      const response = await submitCode({ ...payload, problemId: 'local-problem' });
+      const response = await submitCode({
+        ...payload,
+        problemId: judge.problemId,
+        contestId: judge.contestId,
+        contestProblemId: judge.contestProblemId,
+        courseId: judge.courseId,
+        assignmentId: judge.assignmentId,
+        languageId: judge.languageId,
+      });
       setExecution({
         id: response.submissionId,
         phase: 'running',
@@ -73,7 +88,7 @@ export function useJudgeActions({ notify }: JudgeActionOptions) {
     } finally {
       setBusyAction(null);
     }
-  }, [notify, payload, setExecution]);
+  }, [judge, notify, payload, setExecution]);
 
   const save = useCallback(() => {
     addLog('Workspace saved locally.');

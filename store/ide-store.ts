@@ -7,11 +7,13 @@ import {
   defaultCodeFor,
   IDE_STORAGE_KEY,
   initialExecution,
+  initialJudgeContext,
+  initialProblemContext,
   initialSelectedLanguage,
   initialTestcases,
   initialUiSettings,
 } from '@/store/ide-defaults';
-import type { ExecutionResult, LanguageId, Testcase, UISettings } from '@/types/ide';
+import type { ExecutionResult, IdeProblemContext, JudgeLanguageOption, JudgeSubmissionContext, LanguageId, Testcase, UISettings } from '@/types/ide';
 
 type IDEState = {
   selectedLanguage: LanguageId;
@@ -19,9 +21,15 @@ type IDEState = {
   stdin: string;
   execution: ExecutionResult;
   testcases: readonly Testcase[];
+  problem: IdeProblemContext;
+  judge: JudgeSubmissionContext;
+  judgeLanguages: readonly JudgeLanguageOption[];
   ui: UISettings;
   setLanguage: (language: LanguageId) => void;
   setCode: (language: LanguageId, code: string) => void;
+  setProblem: (problem: IdeProblemContext) => void;
+  setJudgeContext: (judge: Partial<JudgeSubmissionContext>) => void;
+  setJudgeLanguages: (languages: readonly JudgeLanguageOption[]) => void;
   resetCode: (language: LanguageId) => void;
   setStdin: (stdin: string) => void;
   setExecution: (execution: Partial<ExecutionResult>) => void;
@@ -61,9 +69,15 @@ export const useIDEStore = create<IDEState>()(
       stdin: '5\n',
       execution: initialExecution,
       testcases: initialTestcases,
+      problem: initialProblemContext,
+      judge: initialJudgeContext,
+      judgeLanguages: [],
       ui: initialUiSettings,
       setLanguage: (language) => set({ selectedLanguage: language }),
       setCode: (language, code) => set((state) => ({ codeByLanguage: { ...state.codeByLanguage, [language]: code } })),
+      setProblem: (problem) => set({ problem }),
+      setJudgeContext: (judge) => set((state) => ({ judge: { ...state.judge, ...judge } })),
+      setJudgeLanguages: (judgeLanguages) => set({ judgeLanguages }),
       resetCode: (language) => {
         set((state) => ({ codeByLanguage: { ...state.codeByLanguage, [language]: defaultCodeFor(language) } }));
       },
@@ -93,6 +107,9 @@ export const useIDEStore = create<IDEState>()(
         codeByLanguage: state.codeByLanguage,
         stdin: state.stdin,
         testcases: state.testcases,
+        problem: state.problem,
+        judge: state.judge,
+        judgeLanguages: state.judgeLanguages,
         ui: state.ui,
       }),
     },
