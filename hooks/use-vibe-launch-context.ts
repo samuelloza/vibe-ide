@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
-import { fetchVibeLaunchContext } from '@/services/vibe-context-api';
 import { findLanguageByAllowedValue, firstAllowedLanguage, getLanguageAllowedState, inferLanguageId, isLanguageId, mergeApiLanguages } from '@/lib/language-options';
 import { testcasesFromProblem } from '@/lib/problem-testcases';
+import { fetchVibeLaunchContext } from '@/services/vibe-context-api';
 import { useIDEStore } from '@/store/ide-store';
 import type { LanguageId } from '@/types/ide';
+import { useEffect } from 'react';
 
 export function useVibeLaunchContext(notify: (message: string) => void) {
   const setLaunchToken = useIDEStore((state) => state.setLaunchToken);
@@ -71,7 +71,7 @@ export function useVibeLaunchContext(notify: (message: string) => void) {
         setTestcases(testcasesFromProblem(context.problem));
         setContextStatus('ready');
         setStdin(context.problem.example.input ? `${context.problem.example.input}\n` : '');
-        notify('Problema cargado desde la API.');
+        notify('Problema cargado');
       })
       .catch((error: unknown) => {
         const message = error instanceof Error ? error.message : 'No se pudo cargar el contexto del problema.';

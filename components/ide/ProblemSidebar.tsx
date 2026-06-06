@@ -26,7 +26,7 @@ export function ProblemSidebar({ collapsed, width, problem, onResizeStart }: Pro
         <ProblemStatementContent compact />
         <div className="mt-4 rounded-xl border border-slate-800 bg-slate-900/50 p-3 text-xs leading-5 text-slate-400">
           <b className="text-slate-200">Atajos</b>
-          <br />Ctrl+Enter Ejecutar
+          <br />Ctrl+Enter Ejecutar casos
           <br />Ctrl+Shift+Enter Enviar
           <br />Ctrl+S Guardar
         </div>

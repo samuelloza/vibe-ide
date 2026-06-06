@@ -4,7 +4,7 @@ import type { JudgeAdapterFactory } from '@/services/judge-adapters/types';
 import type { SubmissionStatusMessage } from '@/types/ide';
 
 export const createVibeAdapter: JudgeAdapterFactory = (config) => ({
-  run: async (payload, launchToken) => normalizeRunResponse(await postJson<unknown>(config, config.paths?.run ?? '/vibe/runs', payload, launchToken)),
+  run: async (payload, launchToken) => normalizeRunResponse(await postJson<unknown>(config, config.paths?.run ?? '/vibe/custom-input', payload, launchToken)),
   runStatus: async (runId, launchToken): Promise<SubmissionStatusMessage> => {
     const path = fillPath(config.paths?.runStatus ?? '/vibe/runs/{id}', runId);
     return normalizeStatusResponse(runId, await getJson<unknown>(config, path, launchToken));

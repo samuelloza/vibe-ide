@@ -14,7 +14,7 @@ export const COLOR_THEME_CLASS: Readonly<Record<ColorTheme, string>> = {
   hacker: 'theme-hacker',
 };
 
-export const BOTTOM_PANELS = ['output', 'input', 'testcases'] as const satisfies readonly BottomPanel[];
+export const BOTTOM_PANELS = ['output', 'testcases'] as const satisfies readonly BottomPanel[];
 
 export const PANEL_HEIGHT_BOUNDS = { min: 10, max: 520 } as const;
 export const SIDEBAR_WIDTH_BOUNDS = { min: 260, max: 560, viewportRatio: 0.45 } as const;

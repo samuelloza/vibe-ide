@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { LspStatusBadge } from '@/components/LspStatusBadge';
 import { useLspEditor } from '@/hooks/use-lsp-editor';
 import { codeForLanguage } from '@/lib/code-storage';
@@ -9,6 +8,7 @@ import { getLanguage } from '@/lib/language-options';
 import { getLanguageServerConfig } from '@/lsp/config';
 import { lspDocumentFileName } from '@/lsp/document-uri';
 import { useIDEStore } from '@/store/ide-store';
+import dynamic from 'next/dynamic';
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   ssr: false,
@@ -32,7 +32,7 @@ export function CodeEditor() {
     <div className="h-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 shadow-panel">
       <div className="flex h-10 items-center justify-between border-b border-slate-800 bg-slate-950/80 px-4 text-xs text-slate-400">
         <span className="font-mono text-slate-200">{fileName}</span>
-        <span className="hidden md:inline">Ctrl+Space IntelliSense · Scanner-aware Java autocomplete · Ctrl+Enter Run</span>
+        <span className="hidden md:inline">Ctrl+Space IntelliSense · Scanner Java autocomplete · Ctrl+Enter</span>
         <LspStatusBadge status={lspState.status} detail={lspState.detail} serverName={lspConfig.name} />
       </div>
       <MonacoEditor

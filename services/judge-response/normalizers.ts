@@ -16,9 +16,25 @@ function requiredString(value: unknown, field: string): string {
 
 export function normalizeRunResponse(value: unknown): RunResponse {
   if (!isRecord(value)) throw new Error('La respuesta de ejecución del juez no es un objeto válido.');
+  const runId = requiredString(value.runId ?? value.id, 'runId');
+  const result = isRecord(value.result) ? parseSubmissionStatusMessage({ submissionId: runId, ...value.result }, runId) : undefined;
+
   return {
-    runId: requiredString(value.runId ?? value.id, 'runId'),
-    result: isRecord(value.result) ? (value.result as RunResponse['result']) : undefined,
+    runId,
+    result: result
+      ? {
+          id: result.submissionId,
+          phase: result.phase,
+          verdict: result.verdict ?? 'Pending',
+          stdout: result.stdout ?? '',
+          stderr: result.stderr ?? '',
+          compileErrors: result.compileErrors ?? '',
+          logs: result.logs ?? [],
+          runtimeMs: result.runtimeMs,
+          memoryKb: result.memoryKb,
+          testcaseResults: result.testcaseResults,
+        }
+      : undefined,
     statusUrl: optionalString(value.statusUrl),
     streamUrl: optionalString(value.streamUrl),
   };

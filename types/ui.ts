@@ -1,5 +1,5 @@
 export type ColorTheme = 'dark' | 'light' | 'hacker';
-export type BottomPanel = 'output' | 'input' | 'testcases';
+export type BottomPanel = 'output' | 'testcases';
 export type ContextLoadState = 'idle' | 'loading' | 'ready' | 'demo' | 'error';
 
 export type UISettings = {
