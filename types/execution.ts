@@ -12,6 +12,14 @@ export type Verdict =
   | 'Pending'
   | 'Internal Error';
 
+export type ExecutionTestcaseResult = {
+  readonly id?: string;
+  readonly name?: string;
+  readonly actualOutput: string;
+  readonly expectedOutput?: string;
+  readonly status?: Testcase['status'];
+};
+
 export type ExecutionResult = {
   readonly id?: string;
   readonly statusKind?: 'run' | 'submission';
@@ -23,6 +31,7 @@ export type ExecutionResult = {
   readonly logs: readonly string[];
   readonly runtimeMs?: number;
   readonly memoryKb?: number;
+  readonly testcaseResults?: readonly ExecutionTestcaseResult[];
 };
 
 export type RunPayload = {
@@ -62,4 +71,5 @@ export type SubmissionStatusMessage = {
   readonly logs?: readonly string[];
   readonly runtimeMs?: number;
   readonly memoryKb?: number;
+  readonly testcaseResults?: readonly ExecutionTestcaseResult[];
 };

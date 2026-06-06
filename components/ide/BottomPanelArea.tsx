@@ -1,7 +1,6 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { InputPanel } from '@/components/InputPanel';
 import { OutputPanel } from '@/components/OutputPanel';
 import { TestcasePanel } from '@/components/TestcasePanel';
 import { BOTTOM_PANELS } from '@/lib/ui-config';
@@ -9,7 +8,6 @@ import type { BottomPanel } from '@/types/ide';
 
 const PANEL_LABELS: Record<BottomPanel, string> = {
   output: 'Resultado',
-  input: 'Entrada personalizada',
   testcases: 'Casos de prueba',
 };
 
@@ -37,7 +35,6 @@ export function BottomPanelArea({ activePanel, height, onPanelChange }: BottomPa
         <AnimatePresence mode="wait">
           <motion.div key={activePanel} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="h-full">
             {activePanel === 'output' ? <OutputPanel /> : null}
-            {activePanel === 'input' ? <InputPanel /> : null}
             {activePanel === 'testcases' ? <TestcasePanel /> : null}
           </motion.div>
         </AnimatePresence>

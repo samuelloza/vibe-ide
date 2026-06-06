@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Vibe Judge IDE',
+  title: 'Online Judge Bo IDE',
   description: 'Modern competitive programming IDE built with Next.js, Monaco Editor, Tailwind CSS, and WebSockets-ready judge integration.',
 };
 

@@ -7,9 +7,17 @@ import type { TestcaseStatus } from '@/types/ide';
 const statusStyles: Record<TestcaseStatus, string> = {
   idle: 'bg-slate-700 text-slate-200',
   running: 'bg-sky-500/20 text-sky-200',
-  passed: 'bg-emerald-500/20 text-emerald-200',
-  failed: 'bg-rose-500/20 text-rose-200',
+  passed: 'bg-slate-600 text-slate-100',
+  failed: 'bg-slate-600 text-slate-100',
   error: 'bg-amber-500/20 text-amber-200',
+};
+
+const statusLabels: Record<TestcaseStatus, string> = {
+  idle: 'pendiente',
+  running: 'ejecutando',
+  passed: 'listo',
+  failed: 'listo',
+  error: 'error',
 };
 
 export function TestcasePanel() {
@@ -34,23 +42,19 @@ export function TestcasePanel() {
               className="flex w-full items-center justify-between px-3 py-2 text-left text-sm"
             >
               <span className="font-semibold text-slate-200">{testcase.name}</span>
-              <span className={`rounded-full px-2 py-1 text-[11px] font-bold ${statusStyles[testcase.status]}`}>{testcase.status}</span>
+              <span className={`rounded-full px-2 py-1 text-[11px] font-bold ${statusStyles[testcase.status]}`}>{statusLabels[testcase.status]}</span>
             </button>
             <AnimatePresence initial={false}>
               {testcase.expanded ? (
                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="border-t border-slate-800">
-                  <div className="grid gap-2 p-3 lg:grid-cols-3">
+                  <div className="grid gap-2 p-3 lg:grid-cols-2">
                     <label className="grid gap-1 text-xs font-semibold text-slate-500">
                       Entrada
-                      <textarea value={testcase.input} onChange={(event) => updateTestcase(testcase.id, { input: event.target.value })} className="h-24 resize-none rounded-lg border border-slate-800 bg-slate-950 p-2 font-mono text-xs text-slate-200 outline-none focus:border-sky-400" />
-                    </label>
-                    <label className="grid gap-1 text-xs font-semibold text-slate-500">
-                      Salida esperada
-                      <textarea value={testcase.expectedOutput} onChange={(event) => updateTestcase(testcase.id, { expectedOutput: event.target.value })} className="h-24 resize-none rounded-lg border border-slate-800 bg-slate-950 p-2 font-mono text-xs text-slate-200 outline-none focus:border-sky-400" />
+                      <textarea value={testcase.input} onChange={(event) => updateTestcase(testcase.id, { input: event.target.value })} className="h-28 resize-none rounded-lg border border-slate-800 bg-slate-950 p-2 font-mono text-xs text-slate-200 outline-none focus:border-sky-400" />
                     </label>
                     <label className="grid gap-1 text-xs font-semibold text-slate-500">
                       Salida obtenida
-                      <textarea value={testcase.actualOutput ?? ''} readOnly className="h-24 resize-none rounded-lg border border-slate-800 bg-slate-950 p-2 font-mono text-xs text-slate-200 outline-none focus:border-sky-400" />
+                      <textarea value={testcase.actualOutput ?? ''} readOnly className="h-28 resize-none rounded-lg border border-slate-800 bg-slate-950 p-2 font-mono text-xs text-slate-200 outline-none focus:border-sky-400" />
                     </label>
                   </div>
                   <div className="flex justify-end border-t border-slate-800 px-3 py-2">

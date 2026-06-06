@@ -10,7 +10,7 @@ export function RunButton({ running, disabled = false, onRun }: { running: boole
       disabled={running || disabled}
       className="h-9 rounded-lg bg-sky-500 px-4 text-sm font-bold text-slate-950 shadow-glow transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-60"
     >
-      {running ? 'Ejecutando…' : 'Ejecutar'}
+      {running ? 'Ejecutando…' : 'Ejecutar casos'}
     </motion.button>
   );
 }

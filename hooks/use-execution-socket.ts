@@ -5,16 +5,17 @@ import { errorMessage } from '@/lib/errors';
 import { parseSubmissionStatusMessage } from '@/lib/execution-message';
 import { getRun, getSubmission, judgePollingIntervalMs, judgeWebSocketUrl } from '@/services/judge-api';
 import { useIDEStore } from '@/store/ide-store';
+import type { ExecutionPhase } from '@/types/ide';
 
 const TERMINAL_PHASES = new Set(['completed', 'error']);
 
-export function useExecutionSocket(executionId?: string, launchToken?: string, statusKind?: 'run' | 'submission') {
+export function useExecutionSocket(executionId?: string, launchToken?: string, statusKind?: 'run' | 'submission', phase?: ExecutionPhase) {
   const socketRef = useRef<WebSocket | null>(null);
   const setExecution = useIDEStore((state) => state.setExecution);
   const addLog = useIDEStore((state) => state.addLog);
 
   useEffect(() => {
-    if (!executionId || !statusKind) return undefined;
+    if (!executionId || !statusKind || phase === 'completed' || phase === 'error') return undefined;
     const activeExecutionId = executionId;
 
     let cancelled = false;
@@ -34,6 +35,7 @@ export function useExecutionSocket(executionId?: string, launchToken?: string, s
         logs: message.logs ?? [],
         runtimeMs: message.runtimeMs,
         memoryKb: message.memoryKb,
+        testcaseResults: message.testcaseResults,
       });
       return TERMINAL_PHASES.has(message.phase);
     }
@@ -102,7 +104,7 @@ export function useExecutionSocket(executionId?: string, launchToken?: string, s
       socket?.close();
       socketRef.current = null;
     };
-  }, [addLog, executionId, launchToken, setExecution, statusKind]);
+  }, [addLog, executionId, launchToken, phase, setExecution, statusKind]);
 
   return socketRef;
 }
